@@ -26,10 +26,32 @@ class IndexedSearch():
         self.index_obj = index
         self.tokenize = tokenize
 
-    def search(self, keyword):
-        if not isinstance(keyword, str) or not keyword.split():
+    # def search(self, keyword):
+    #     if not isinstance(keyword, str) or not keyword.split():
+    #         raise ValueError("Keyword must be a non-empty string")
+    #     result = []
+    #     cleaned_keyword = self.tokenize(keyword)
+    #     result = list(self.index_obj.search(cleaned_keyword[0]))
+    #     return result
+
+    def search(self, search_text):
+        if not isinstance(search_text, str) or not search_text.split():
             raise ValueError("Keyword must be a non-empty string")
         result = []
-        cleaned_keyword = self.tokenize(keyword)
-        result = list(self.index_obj.search(cleaned_keyword[0]))
-        return result
+        operator = 'AND'
+
+        if " or " in search_text.lower():
+            operator = 'OR'
+            search_text = search_text.replace(" or ", " ")
+
+        tokens = self.tokenize(search_text)
+        
+        for token in tokens:
+            result.append(self.index_obj.search(token))
+
+        if len(result) >= 1:
+            final_result = set.intersection(*result) if operator == 'AND' else set.union(*result)
+        else:
+            final_result = set(result)
+
+        return final_result

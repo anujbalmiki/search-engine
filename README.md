@@ -32,3 +32,15 @@
 | cat | [1] |
 | sat | [1, 2] |
 | dog | [2] |
+
+
+### Phase 1 complete: 
+- storage
+- tokenizer 
+- inverted 
+- index 
+- naive and indexed search
+
+### Phase 2 complete:
+- multi-word 
+- AND/OR queries using set intersection and union.

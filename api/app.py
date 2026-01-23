@@ -19,7 +19,7 @@ def run_test():
     documents = [
         "The quick brown fox",
         "The lazy dog jumps over the fox",
-        "Python is great for search engines",
+        "Python is the great for search engines",
         "Data structures are fun"
     ]
 
@@ -35,7 +35,7 @@ def run_test():
     indexed_searcher = IndexedSearch(index)
 
     # 4. Run Tests
-    test_keywords = ["fox", "the", "python", "missingword"]
+    test_keywords = ["fox", "the or python", "missingword or brown"]
 
     print("\n--- Running Comparisons & Performance ---")
     for word in test_keywords:
