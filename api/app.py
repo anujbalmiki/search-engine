@@ -28,7 +28,7 @@ def run_test():
         doc_id = store.add_document(text)
         tokens = tokenize(text)
         index.add_index(doc_id, tokens)
-        print(f"Added ID {doc_id}: '{text}'")
+        print(f"Added ID {doc_id}: '{tokens}'")
 
     # 3. Initialize Searchers
     naive_searcher = NaiveSearch(store)

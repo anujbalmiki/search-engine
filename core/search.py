@@ -26,14 +26,6 @@ class IndexedSearch():
         self.index_obj = index
         self.tokenize = tokenize
 
-    # def search(self, keyword):
-    #     if not isinstance(keyword, str) or not keyword.split():
-    #         raise ValueError("Keyword must be a non-empty string")
-    #     result = []
-    #     cleaned_keyword = self.tokenize(keyword)
-    #     result = list(self.index_obj.search(cleaned_keyword[0]))
-    #     return result
-
     def search(self, search_text):
         if not isinstance(search_text, str) or not search_text.split():
             raise ValueError("Keyword must be a non-empty string")
