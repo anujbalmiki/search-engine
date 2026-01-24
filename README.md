@@ -44,3 +44,8 @@
 ### Phase 2 complete:
 - multi-word 
 - AND/OR queries using set intersection and union.
+
+### Phase 3 complete: 
+- relevance scoring
+- top-K retrieval
+- heap-based ranking.

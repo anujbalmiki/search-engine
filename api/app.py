@@ -19,7 +19,7 @@ def run_test():
     documents = [
         "The quick brown fox",
         "The lazy dog jumps over the fox",
-        "Python is the great for search engines",
+        "Python is the great for search engines, python, python",
         "Data structures are fun"
     ]
 
@@ -32,7 +32,7 @@ def run_test():
 
     # 3. Initialize Searchers
     naive_searcher = NaiveSearch(store)
-    indexed_searcher = IndexedSearch(index)
+    indexed_searcher = IndexedSearch(index, store)
 
     # 4. Run Tests
     test_keywords = ["fox", "the or python", "missingword or brown"]
