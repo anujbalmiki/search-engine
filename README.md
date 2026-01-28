@@ -49,3 +49,8 @@
 - relevance scoring
 - top-K retrieval
 - heap-based ranking.
+
+### Phase 4 complete:
+- autocomplete implemented
+- trie-based
+- DFS Traversal

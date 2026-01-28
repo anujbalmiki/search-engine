@@ -9,11 +9,13 @@ from storage.document_store import Storage
 from core.tokenizer import tokenize
 from core.index import InvertedIndex
 from core.search import NaiveSearch, IndexedSearch
+from core.trie import Trie
 
 def run_test():
     # 1. Setup Instances
     store = Storage()
     index = InvertedIndex()
+    trie = Trie()
 
     # 2. Data Ingestion
     documents = [
@@ -28,6 +30,10 @@ def run_test():
         doc_id = store.add_document(text)
         tokens = tokenize(text)
         index.add_index(doc_id, tokens)
+        
+        # insert the token in the trie
+        for token in tokens:
+            trie.insert(token)
         print(f"Added ID {doc_id}: '{tokens}'")
 
     # 3. Initialize Searchers
