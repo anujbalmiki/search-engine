@@ -1,6 +1,9 @@
 import re
+
+from core import fuzzy
 from .tokenizer import tokenize
 from heapq import heappush, heappop
+from .fuzzy import find_similar_tokens
 
 class NaiveSearch():
 
@@ -27,6 +30,7 @@ class IndexedSearch():
         self.index_obj = index
         self.storage_obj = storage
         self.tokenize = tokenize
+        self.find_similar_tokens = find_similar_tokens
 
     def search(self, search_text, k=None):
         if not isinstance(search_text, str) or not search_text.split():
@@ -34,6 +38,7 @@ class IndexedSearch():
         result = []
         operator = 'AND'
 
+        # --- STEP 1: Attempt Exact Match ---
         if " or " in search_text.lower():
             operator = 'OR'
             search_text = search_text.replace(" or ", " ")
@@ -47,7 +52,25 @@ class IndexedSearch():
             candidates = set.intersection(*result) if operator == 'AND' else set.union(*result)
         else:
             candidates = set(result)
-        
+
+        # --- STEP 2: Fuzzy Fallback (If no exact candidates found) ---
+        if not candidates:
+            fuzzy_token_results = []
+            vocabulary = self.index_obj.index.keys()
+            
+            for token in search_tokens:
+                # Find all words in our index similar to the typo
+                similar = self.find_similar_tokens(token, vocabulary, max_distance=1)
+                # Combine the doc_ids of all similar words
+                word_union = set()
+                for sim_token in similar:
+                    word_union.update(self.index_obj.search(sim_token))
+                if word_union:
+                    fuzzy_token_results.append(word_union)
+            if fuzzy_token_results:
+                candidates = set.intersection(*fuzzy_token_results) if operator == 'AND' else set.union(*fuzzy_token_results)
+
+        # --- STEP 3: Scoring & Top-K (Heap) ---
         final_result = {}
         heap = []
         search_tokens = set(search_tokens)
